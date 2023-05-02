@@ -1,0 +1,5 @@
+product sku,product name,product image,category ids
+pro001,prod1,https://picsum.photos/id/237/200/300,cat11-cat12
+pro002,prod2,https://picsum.photos/id/237/200/300,cat12
+pro003,prod3,https://picsum.photos/id/237/200/300,cat13
+pro004,prod4,https://picsum.photos/id/237/200/300,cat3

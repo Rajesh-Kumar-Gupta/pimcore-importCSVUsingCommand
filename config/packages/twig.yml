@@ -1,0 +1,5 @@
+twig:
+    # ...
+    paths:
+        '%kernel.project_dir%/bundles/HelloBundle/Resources/views': HelloBundle,
+        '%kernel.project_dir%/bundles/MedilabBundle/Resources/views': MedilabBundle

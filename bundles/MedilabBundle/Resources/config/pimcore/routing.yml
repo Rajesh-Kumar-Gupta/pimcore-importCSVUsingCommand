@@ -1,0 +1,5 @@
+medilab:
+    resource: "@MedilabBundle/Controller/"
+    type:     annotation
+    prefix:   /
+

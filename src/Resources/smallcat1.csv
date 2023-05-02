@@ -1,0 +1,12 @@
+hie_PARENT_NODE_ID;parent_description;hie_NODE_ID;hie_DESCRIPTION
+SUB7;;1049F56   ;1940's Chevrolet Hat
+SUB7;;1049S7    ;Triangular Air Cleaner2
+TOP1;Air & Fuel Delivery ;SUB96;Fuel Pumps & Regulators
+sub1test;;sub98test;sub98test
+TOP1;Air & Fuel Delivery ;SUB98;Fuel Tanks
+TOP10;;sub1test;sub1test
+;;TOP1;Air & Fuel Delivery
+;;TOP10;Decals
+;;TOP11;Door Handles & Hardware
+1049F56;;test333;test333
+1049F56;;test3222;test3222

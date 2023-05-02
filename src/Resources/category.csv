@@ -1,0 +1,9 @@
+categoryId,categoryName,parentsId
+par1,,
+par2,,
+cat11,c1n,par1
+cat12,c2n,par1
+cat13,c2n,par1
+cat3,c3n,par2
+cat4,c4n,par2
+subcat1,sc1n,cat11
