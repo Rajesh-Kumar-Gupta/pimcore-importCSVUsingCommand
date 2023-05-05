@@ -1,0 +1,193 @@
+pimcore:
+    workflows:
+
+        simple_asset_workflow:
+
+            label: 'Simple Asset Workflow'
+
+            type: 'state_machine'
+
+             # List of supported entity classes. Take a look at the Symfony docs for more details.
+            supports:
+
+                # Example:
+                - \Pimcore\Model\Asset
+
+            #support_strategy:
+            #    type: "expression"
+            #    arguments:
+            #        - \Pimcore\Model\Asset
+            #        - 'is_fully_authenticated()'
+
+            initial_markings: start
+
+            places:
+                start:
+                    label: 'Start Place of the Workflow'
+                    title: 'Start checking this asset'
+                    color: '#3572b0'
+                    visibleInHeader: true
+
+                review_license:
+                    label: 'Review License'
+                    color: 'orange'
+                    visibleInHeader: true
+
+                finished:
+                    label: 'Asset Reviewed'
+                    color: 'green'
+                    visibleInHeader: true
+
+            transitions:
+                start_workflow:
+                    from: start
+                    to: review_license
+                    options:
+                        label: 'Start Workflow'
+                finish_review:
+                    from: review_license
+                    to: finished
+                    options:
+                        label: 'Finish Review'
+                restart_review:
+                    from: finished
+                    to: review_license
+                    options:
+                        label: 'Restart Review'
+
+        product_data_enrichment:
+            label: "Product Data Enrichment Workflow"
+
+            # List of supported entity classes. Take a look at the Symfony docs for more details.
+            supports:
+
+                # Example:
+                - \Pimcore\Model\DataObject\Product
+
+            #support_strategy:
+            #    service: App\Workflow\SupportsStrategy
+
+            initial_markings: todo
+
+            places:
+                todo:
+                    label: 'New'
+                    title: 'Insurance is in new state'
+                    color: '#3572b0'
+                    colorInverted: true
+                    permissions:
+                        - objectLayout: 1
+                          publish: false
+                          unpublish: false
+                        - condition: is_fully_authenticated() and 'ROLE_PIMCORE_PRODUCT' in role_names
+
+                edit_text:
+                    label: 'Basic Details'
+                    color: 'orange'
+                    permissions:
+                        - objectLayout: 2
+                          publish: false
+                          unpublish: false
+                        - condition: is_fully_authenticated() and 'ROLE_PIMCORE_CONTENT' in role_names
+                edit_images:
+                    label: 'Policy Documents'
+                    color: 'orange'
+                    permissions:
+                        - objectLayout: 3
+                          publish: false
+                          unpublish: false
+                        - condition: is_fully_authenticated() and 'ROLE_PIMCORE_MEDIA' in role_names
+                edit_review:
+                    label: 'Review'
+                    color: 'orange'
+                    permissions:
+                        - objectLayout: 4
+                          publish: false
+                          unpublish: false
+                        - condition: is_fully_authenticated() and 'ROLE_PIMCORE_CONTENT' in role_names
+                
+                done_text:
+                    label: 'Done Basic Details'
+                    color: 'green'
+                    permissions:
+                        - publish: false
+                          unpublish: false
+                done_images:
+                    label: 'Done Policy Documents'
+                    color: 'green'
+                    permissions:
+                        - publish: false
+                          unpublish: false
+                done_review:
+                    label: 'Done Review'
+                    color: 'green'
+                    permissions:
+                        - publish: false
+                          unpublish: false
+                done_all:
+                    label: 'Product is ready'
+                    color: '#009900'
+                    permissions:
+                        - condition: "is_fully_authenticated() and 'ROLE_PIMCORE_ADMIN' in role_names"
+                          #modify: true
+                          objectLayout: Review
+
+                        - objectLayout: Review
+                          #modify: false
+
+
+            transitions:
+                start_work:
+                    from: 'todo'
+                    to: ['edit_text', 'edit_images']
+                    options:
+                        label: 'Start Work on new Insurance'
+                        #changePublishedState: force_unpublished
+                mark_text_done:
+                    from: 'edit_text'
+                    to: 'done_text'
+                    options:
+                        label: 'Mark Basice Details Done'
+                        #changePublishedState: force_unpublished
+                
+                mark_images_done:
+                    from: 'edit_images'
+                    to: 'done_images'
+                    options:
+                        label: 'Mark Policy Document Done'
+                        #changePublishedState: force_unpublished
+                        notificationSettings:
+                            - notifyUsers: ['admin']
+                              notifyRoles: ['projectmanagers', 'admins']
+                              channelType: ['mail', 'pimcore_notification']
+                mark_review_done:
+                    from: 'edit_review'
+                    to: 'done_review'
+                    options:
+                        label: 'Mark Review Done'
+                        #changePublishedState: force_unpublished
+                mark_done_all:
+                    from: ['done_text', 'done_images']
+                    to: 'done_all'
+                    options:
+                        label: 'Publish'
+                        changePublishedState: force_published
+                        notes:
+                            commentEnabled: true
+                            #customHtml:
+                            #    service: 'App\Services\Workflow\CustomHtmlService'
+                            #    position: 'top'
+                        notificationSettings:
+                            - notifyUsers: ['admin']
+                              notifyRoles: ['Approver', 'admins']
+                              channelType: ['mail', 'pimcore_notification']
+                reopen_issue:
+                    from: 'done_all'
+                    to: 'todo'
+                    options:
+                        label: 'Reopen Insurance'
+                        #changePublishedState: force_unpublished
+                        notes:
+                            commentEnabled: true
+                            commentRequired: true
+            

@@ -21,4 +21,30 @@ class DefaultController extends FrontendController
     {
         return $this->render('@Medilab/includes/footer.html.twig');
     }
+
+    /**
+     * @Route("/login")
+     */
+    public function loginAction(Request $request)
+    {
+        //return new Response('Hello world from medilab');
+        return $this->render('@Medilab/login.html.twig');
+    }
+
+    /**
+     * @Route("/register")
+     */
+    public function registerAction(Request $request)
+    {
+        //return new Response('Hello world from medilab');
+        return $this->render('@Medilab/registration.html.twig');
+    }
+
+    /**
+     * @Route("/get_register", name="get_register", methods={"POST"})
+     */
+    public function get_registerAction(Request $request)
+    {
+        dd($request);
+    }
 }

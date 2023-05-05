@@ -24,6 +24,7 @@ use Pimcore\Model\Document\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\Folder;
+use Pimcore\Model\Document\dFolder;
 use Pimcore\Model\DataObject\Category;
 use Pimcore\Model\DataObject\Product;
 use Pimcore\Model\DataObject\Data\ExternalImage;
@@ -38,7 +39,7 @@ class CommonService
     { 
     }
 
-   /**
+    /**
      * Get the folder id otherwise create new folder
      * @param $folderName
      * @param $parentObj
@@ -339,6 +340,5 @@ class CommonService
         $newAsset->setData(file_get_contents($filePath));
         $newAsset->setParent(\Pimcore\Model\Asset::getByPath("/"));
         $newAsset->save(["versionNote" => "my new version"]);
-    }
-    
+    }    
 }

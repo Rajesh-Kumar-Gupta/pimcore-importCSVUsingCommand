@@ -1,7 +1,7 @@
 imports:
     - { resource: 'local/' }
     - { resource: packages/twig.yml }
-
+    - { resource: workflows.yaml }
 
 pimcore:
       bundles:
